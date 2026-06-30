@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { Analytics } from '@vercel/analytics/react'
 import { useSleeper } from './hooks/useSleeper'
 import Standings from './components/Standings'
 import Matchups from './components/Matchups'
@@ -39,6 +40,7 @@ function App() {
           <div className="text-2xl font-bold tracking-tight">LOADING LEAGUE DATA</div>
           <div className="text-gray-500 text-sm mt-2">Fetching from Sleeper...</div>
         </div>
+        <Analytics />
       </div>
     )
   }
@@ -51,6 +53,7 @@ function App() {
           <div className="text-xl font-bold mb-2">CONNECTION ERROR</div>
           <div className="text-gray-400">{error}</div>
         </div>
+        <Analytics />
       </div>
     )
   }
@@ -70,6 +73,7 @@ function App() {
           onBack={() => setSelectedTeam(null)}
         />
         <Ticker matchups={matchups} rosters={rosters} users={users} currentWeek={currentWeek} />
+        <Analytics />
       </div>
     )
   }
@@ -134,6 +138,7 @@ function App() {
       </main>
 
       <Ticker matchups={matchups} rosters={rosters} users={users} currentWeek={currentWeek} />
+      <Analytics />
     </div>
   )
 }
