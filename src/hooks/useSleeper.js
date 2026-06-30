@@ -89,8 +89,23 @@ export function useSleeper() {
     return () => clearInterval(interval)
   }, [refreshMatchups, currentWeek])
 
+  const weeklyPoints = {}
+  const weeklyOpponents = {}
+  Object.entries(matchups).forEach(([week, entries]) => {
+    entries.forEach(entry => {
+      const rid = entry.roster_id
+      if (!weeklyPoints[rid]) weeklyPoints[rid] = {}
+      if (!weeklyOpponents[rid]) weeklyOpponents[rid] = {}
+      const pts = entry.starters?.reduce((sum, id, i) => sum + (entry.starters_points?.[i] || 0), 0) || 0
+      weeklyPoints[rid][week] = pts
+      const opponent = entries.find(e => e.matchup_id === entry.matchup_id && e.roster_id !== rid)
+      if (opponent) weeklyOpponents[rid][week] = opponent.roster_id
+    })
+  })
+
   return {
     league, rosters, users, matchups, players,
-    draft, draftPicks, loading, error, currentWeek, refreshMatchups
+    draft, draftPicks, loading, error, currentWeek, refreshMatchups,
+    weeklyPoints, weeklyOpponents
   }
 }
